@@ -1,0 +1,11 @@
+services:
+  spring-boot:
+    build: ./
+    ports:
+      - 8080:8080
+      - volumes:
+        - .:/app
+    networks:
+      - spring-postgres
+networks:
+  spring-postgres:
