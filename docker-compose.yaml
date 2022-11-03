@@ -3,8 +3,8 @@ services:
     build: ./
     ports:
       - 8080:8080
-      - volumes:
-        - .:/app
+    volumes:
+      - .:/app
     networks:
       - spring-postgres
 networks:
