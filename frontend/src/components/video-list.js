@@ -11,13 +11,8 @@ class VideoList extends React.Component {
 
     componentDidMount() {
         fetch("http://localhost:8080/video/all/")
-            .then(result => result.json())
-            .then(result => {
-                console.log('Result: ' + result)
-                this.setState({...this.state, videos: result});
-            }
-        );
-        console.log(this.state.videos)
+            .then(response => response.json())
+            .then(videoList => this.setState({videos: videoList}));
     }
 
     render() {
@@ -27,9 +22,9 @@ class VideoList extends React.Component {
                     <h3>Your videos</h3>
                 </header>
                 <ul id="your-videos">
-                    {this.state.videos.map(video => 
-                        <li>
-                            <a href={window.location.origin + window.location.pathname + '?video=' + video}>{video}</a>
+                    {this.state.videos.map((video, index) => 
+                        <li key={video + index}>
+                            <a href={window.location.origin + '?video=' + video}>{video}</a>
                         </li>
                     )}
                 </ul>

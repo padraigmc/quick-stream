@@ -17,9 +17,9 @@ class UploadVideo extends React.Component {
 			<form id="video-form" onSubmit={this.uploadVideo}>
 				<fieldset>
 					<legend>Upload a video</legend>
-					<label for="file">Video File</label>
+					<label htmlFor="file">Video File</label>
 					<input id="file" name="file" type="file" accept="application/mp4" />
-					<label for="name">Video Name</label>
+					<label htmlFor="name">Video Name</label>
 					<input id="name" name="name" type="text" />
 					<button type="submit">Save</button>
 				</fieldset>
