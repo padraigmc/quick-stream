@@ -1,3 +1,23 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+//import './index.css';
+import App from './App';
+//import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+//reportWebVitals(console.log);
+
+
+/*
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +27,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1 id="page-header">Quick Steam</h1>
-    </header>
-
     <main>
         <div id="video-list">
             <header>
@@ -25,17 +41,8 @@
             </header>
             <video id="video-screen" width="720px" height="480px" controls></video>
         </div>
-        <form id="video-form">
-            <fieldset>
-                <legend>Upload a video</legend>
-                <label for="file">Video File</label>
-                <input id="file" name="file" type="file" accept="application/mp4">
-                <label for="name">Video Name</label>
-                <input id="name" name="name" type="text">
-                <button type="submit">Save</button>
-            </fieldset>
-        </form>
     </main>
     <script src="main.js"></script>
 </body>
 </html>
+*/
