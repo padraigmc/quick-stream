@@ -30,7 +30,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public void saveVideo(MultipartFile file, String name) throws IOException {
-        if(repo.existsByName(name)){
+        if (repo.existsByName(name)){
             throw new VideoAlreadyExistsException();
         }
         Video newVid = new Video(name, file.getBytes());
