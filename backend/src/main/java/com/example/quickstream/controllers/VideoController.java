@@ -25,13 +25,13 @@ public class VideoController {
     }
 
     // {name} is a path variable in the url. It is extracted as the String parameter annotated with @PathVariable
-    @GetMapping("{name}")
+    @GetMapping("/{name}")
     public ResponseEntity<Resource> getVideoByName(@PathVariable("name") String name){
         return ResponseEntity
                 .ok(new ByteArrayResource(videoService.getVideo(name).getData()));
     }
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public ResponseEntity<List<String>> getAllVideoNames(){
         return ResponseEntity
                 .ok(videoService.getAllVideoNames());
