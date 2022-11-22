@@ -1,48 +1,50 @@
 package com.example.quickstream.services;
 
+import com.example.quickstream.contentstore.VideoContentStore;
 import com.example.quickstream.domain.Video;
-import com.example.quickstream.exceptions.VideoAlreadyExistsException;
 import com.example.quickstream.exceptions.VideoNotFoundException;
 import com.example.quickstream.repo.VideoRepo;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class VideoServiceImpl implements VideoService {
-    private VideoRepo repo;
+    @Autowired private VideoRepo repo;
+    @Autowired private VideoContentStore contentStore;
 
     @Override
-    public Video getVideo(Long id) {
+    public byte[] getVideoContent(Long id) throws IOException {
         Optional<Video> video = repo.findById(id);
+        if (video.isEmpty()) { throw new VideoNotFoundException(); }
 
-        if (video.isPresent()){
-            return video.get();
-        } else {
-            throw new VideoNotFoundException();
-        }
-        return repo.findByName(name);
+        InputStream videoInputStream = contentStore.getContent(video.get());
+        if (videoInputStream == null) { throw new VideoNotFoundException(); }
+
+        return videoInputStream.readAllBytes();
     }
 
     @Override
-    public List<String> getAllVideoNames() {
-        return repo.getAllEntryNames();
+    public List<Video> getAllVideos() {
+        return repo.findAll();
     }
 
     @Override
-    public void saveVideo(byte[] data, String name) throws IOException {
-        if (repo.existsByName(name)){
-            throw new VideoAlreadyExistsException();
-        }
+    public void saveVideo(MultipartFile file, String name) throws IOException {
+        // create video object
+        Video newVideo = repo.save(new Video(name));
 
-        // create video object and save data to db
-        Video newVid = new Video(name, data);
-        repo.save(newVid);
+        // save video file against created video object in content store
+        contentStore.setContent(newVideo, file.getInputStream());
+
+        // create database entry in video repository
+        repo.save(newVideo);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.quickstream;
 
+import com.example.quickstream.contentstore.VideoContentStore;
 import com.example.quickstream.domain.Video;
 import com.example.quickstream.repo.VideoRepo;
 import com.example.quickstream.services.VideoService;
@@ -16,45 +17,54 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @Transactional
 public class VideoServiceImplIntegrationTest {
-    @Autowired
-    VideoService service;
-
-    @Autowired
-    VideoRepo repo;
+    @Autowired VideoService service;
+    @Autowired VideoRepo repo;
+    @Autowired VideoContentStore contentStore;
 
     String testName = "myVid";
 
     @Test
-    void getVideo() {
-        // create video and save to repo
-        Video expected = new Video(testName, null);
-        repo.save(expected);
+    void getVideoContent() throws IOException {
+        // create video and save to repo and content store
+        Video testVideo = new Video(testName);
+        MultipartFile file = mock(MultipartFile.class);
+        byte[] expected = file.getBytes();
 
-        // query service for test video above
-        Video actual = service.getVideo(testName);
+        contentStore.setContent(testVideo, file.getInputStream());
+        repo.save(testVideo);
+
+        // query service for test video content above
+        byte[] actual = service.getVideoContent(testVideo.getId());
 
         // result from service should be the test video above
         assertEquals(expected, actual);
     }
 
+    /*
+    /*
     @Test
     void saveVideo() throws IOException {
         // create video and save using the service method
         MultipartFile file = mock(MultipartFile.class);
-        service.saveVideo(file.getBytes(), testName);
+        InputStream is = mock(InputStream.class);
+
+        when(file.getInputStream()).thenReturn(is);
+
+        service.saveVideo(file, testName);
 
         // After saving the video, it should exist in the repo
         assertTrue(repo.existsByName(testName));
     }
+     */
 
     @Test
     void getAllVideoNames() {
         // save a test video to the repo and add name to expected list
-        List<String> expected = List.of(testName);
-        repo.save(new Video(testName, null));
+        List<Video> expected = List.of(new Video(testName));
+        repo.save(new Video(testName));
 
         // query service for video names
-        List<String> actual = service.getAllVideoNames();
+        List<Video> actual = service.getAllVideos();
 
         // Check the service returns a list of the same contents as the expected list of videos
         assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
