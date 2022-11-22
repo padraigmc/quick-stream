@@ -6,8 +6,11 @@ import com.example.quickstream.exceptions.VideoNotFoundException;
 import com.example.quickstream.repo.VideoRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Service
@@ -29,11 +32,13 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public void saveVideo(MultipartFile file, String name) throws IOException {
+    public void saveVideo(byte[] data, String name) throws IOException {
         if (repo.existsByName(name)){
             throw new VideoAlreadyExistsException();
         }
-        Video newVid = new Video(name, file.getBytes());
+
+        // create video object and save data to db
+        Video newVid = new Video(name, data);
         repo.save(newVid);
     }
 }

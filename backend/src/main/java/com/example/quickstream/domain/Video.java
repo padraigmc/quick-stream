@@ -1,12 +1,14 @@
 package com.example.quickstream.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Table(name="videos")
+@Getter @Setter
 @NoArgsConstructor
 public class Video{
     @Id
@@ -16,7 +18,7 @@ public class Video{
     @Column(unique = true)
     private String name;
 
-    @Lob
+    @Column(unique = true)
     private byte[] data;
 
     public Video(String name, byte[] data) {

@@ -66,7 +66,7 @@ public class VideoServiceImplTest {
         Video testVid = new Video(testName, file.getBytes());
 
         // save test file and verify methods ran once
-        service.saveVideo(file, testName);
+        service.saveVideo(file.getBytes(), testName);
         verify(repo, times(1)).existsByName(testName);
         verify(repo, times(1)).save(testVid);
     }

@@ -41,7 +41,7 @@ public class VideoServiceImplIntegrationTest {
     void saveVideo() throws IOException {
         // create video and save using the service method
         MultipartFile file = mock(MultipartFile.class);
-        service.saveVideo(file, testName);
+        service.saveVideo(file.getBytes(), testName);
 
         // After saving the video, it should exist in the repo
         assertTrue(repo.existsByName(testName));

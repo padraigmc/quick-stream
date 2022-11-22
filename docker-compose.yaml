@@ -1,4 +1,18 @@
 services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    command: ["postgres", "-c", "log_statement=all"]
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./backend/db:/var/lib/postgresql/data
+    networks:
+      - api-db
   backend:
     build: backend
     ports:
@@ -6,7 +20,8 @@ services:
     volumes:
       - ./backend:/app
     networks:
-      - spring-postgres
+      - ui-api
+      - api-db
   frontend:
     build: frontend
     ports:
@@ -14,6 +29,14 @@ services:
     volumes:
       - ./frontend:/app
     networks:
-      - spring-postgres
+      - ui-api
 networks:
-  spring-postgres:
+  ui-api:
+  api-db:
+volumes:
+  backend:
+    driver: local
+  frontend:
+    driver: local
+  db:
+    driver: local
