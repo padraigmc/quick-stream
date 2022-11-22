@@ -15,7 +15,7 @@ public class Video{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
+    @Column
     private String name;
 
     @Column(unique = true)

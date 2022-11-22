@@ -27,11 +27,13 @@ public class VideoController {
         return ResponseEntity.ok("Video saved successfully.");
     }
 
-    // {name} is a path variable in the url. It is extracted as the String parameter annotated with @PathVariable
-    @GetMapping("{name}")
-    public ResponseEntity<Resource> getVideoByName(@PathVariable("name") String name) throws IOException {
+    // {id} is a path variable in the url. It is extracted as the String parameter annotated with @PathVariable
+    @GetMapping("{id}")
+    public ResponseEntity<Resource> getVideoById(@PathVariable("id") Long id) throws IOException {
+        Video video = videoService.getVideo(id);
+
         return ResponseEntity
-                .ok(new ByteArrayResource(videoService.getVideo(name).getData()));
+                .ok(new ByteArrayResource(videoService.getVideo(id).getData()));
     }
 
     @GetMapping("all")

@@ -19,8 +19,12 @@ public class VideoServiceImpl implements VideoService {
     private VideoRepo repo;
 
     @Override
-    public Video getVideo(String name) {
-        if(!repo.existsByName(name)){
+    public Video getVideo(Long id) {
+        Optional<Video> video = repo.findById(id);
+
+        if (video.isPresent()){
+            return video.get();
+        } else {
             throw new VideoNotFoundException();
         }
         return repo.findByName(name);

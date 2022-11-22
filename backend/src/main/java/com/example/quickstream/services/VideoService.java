@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface VideoService {
-    Video getVideo(String name);
+    Video getVideo(Long id);
 
     void saveVideo(byte[] file, String name) throws IOException;
 
