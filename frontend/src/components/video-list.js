@@ -23,8 +23,8 @@ class VideoList extends React.Component {
                 </header>
                 <ul id="your-videos">
                     {this.state.videos.map((video, index) => 
-                        <li key={video + index}>
-                            <a href={window.location.origin + '?video=' + video}>{video}</a>
+                        <li key={video.id}>
+                            <a href={window.location.origin + '?video=' + video.id}>{video.name}</a>
                         </li>
                     )}
                 </ul>

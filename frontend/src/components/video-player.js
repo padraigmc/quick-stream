@@ -9,7 +9,7 @@ class VideoPlayer extends React.Component {
 		if (queryParams.video) {
             return (
                 <div id="video-player" >
-                    <h3 id="now-playing">Now Playing... {queryParams.video}</h3>
+                    <h3 id="now-playing">Now Playing... {queryParams.video.name}</h3>
                     <video id="video-screen" width="720px" height="480px" controls crossOrigin="true" src={"http://localhost:8080/video/" + queryParams.video}></video>
                 </div>
 		    );

@@ -1,5 +1,6 @@
 package com.example.quickstream.controllers;
 
+import com.example.quickstream.domain.Video;
 import com.example.quickstream.services.VideoService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -7,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -24,16 +26,16 @@ public class VideoController {
         return ResponseEntity.ok("Video saved successfully.");
     }
 
-    // {name} is a path variable in the url. It is extracted as the String parameter annotated with @PathVariable
-    @GetMapping("/{name}")
-    public ResponseEntity<Resource> getVideoByName(@PathVariable("name") String name){
+    // {id} is a path variable in the url. It is extracted as the String parameter annotated with @PathVariable
+    @GetMapping("{id}")
+    public ResponseEntity<Resource> getVideoContentById(@PathVariable("id") Long id) throws IOException {
         return ResponseEntity
-                .ok(new ByteArrayResource(videoService.getVideo(name).getData()));
+                .ok(new ByteArrayResource(videoService.getVideoContent(id)));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<String>> getAllVideoNames(){
+    @GetMapping("all")
+    public ResponseEntity<List<Video>> getAllVideos(){
         return ResponseEntity
-                .ok(videoService.getAllVideoNames());
+                .ok(videoService.getAllVideos());
     }
 }
