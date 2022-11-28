@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import React from 'react';
 import './styles.css';
 
@@ -11,12 +11,12 @@ import Watch from './pages/watch/watch';
 const App = () => (
   <div className="app">
     <NavBar />
-    <Switch>
-      <Route exact path='/' component={Home}></Route>
-      <Route exact path='/browse' component={Browse}></Route>
-      <Route exact path='/upload' component={Upload}></Route>
-      <Route exact path='/watch/:id' component={Watch}></Route>
-    </Switch>
+    <Routes>
+      <Route exact path='/' element={<Home />}></Route>
+      <Route exact path='/browse' element={<Browse />}></Route>
+      <Route exact path='/upload' element={<Upload />}></Route>
+      <Route exact path='/watch/:id' element={<Watch />}></Route>
+    </Routes>
   </div>
 );
 

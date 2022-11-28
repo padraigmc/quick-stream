@@ -1,30 +1,32 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-class UploadVideo extends React.Component {
-	uploadVideo = ev => {
+const UploadVideo = () => {
+	const navigate = useNavigate();
+
+	const uploadVideo = ev => {
 		ev.preventDefault();
 		const data = new FormData(ev.target);
 		fetch('http://localhost:8080/video', {
 			method: 'POST',
 			body: data
-		}).then(result => result.text()).then(_ => {
-			window.location.href = 'index.html';
+		}).then(result => result.text()).then(result => {
+			console.log(result);
+			navigate('/browse');
 		});
 	}
 
-    render() {
-		return (
-			<form id="video-form" onSubmit={this.uploadVideo}>
-				<fieldset>
-					<label htmlFor="file">Video File</label>
-					<input id="file" name="file" type="file" accept="application/mp4" />
-					<label htmlFor="name">Video Name</label>
-					<input id="name" name="name" type="text" />
-					<button type="submit">Save</button>
-				</fieldset>
-			</form>
-		);
-	}
+	return (
+		<form id="video-form" onSubmit={uploadVideo}>
+			<fieldset>
+				<label htmlFor="file">Video File</label>
+				<input id="file" name="file" type="file" accept="application/mp4" />
+				<label htmlFor="name">Video Name</label>
+				<input id="name" name="name" type="text" />
+				<button type="submit">Save</button>
+			</fieldset>
+		</form>
+	);
 }
 
 export default UploadVideo;
