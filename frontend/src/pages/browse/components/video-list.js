@@ -1,34 +1,44 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams  } from 'react-router-dom';
+import VideoCard from "./video-card"
 
 class VideoList extends React.Component {
     constructor(props) {
         super(props);
         
         this.state = {
-            videos: []
+            videos: [],
+            currentPage: 0,
+            totalItems: 0,
+            totalPages: 0
         }
+
+        //const [searchParams] = useSearchParams();
+        //console.log(searchParams)
     }
 
     componentDidMount() {
-        fetch("http://localhost:8080/video/all/")
+        fetch("http://localhost:8080/video/?limit=10")
             .then(response => response.json())
-            .then(videoList => this.setState({videos: videoList}));
+            .then(response => {
+                this.setState({
+                    videos: response.videos,
+                    currentPage: response.currentPage,
+                    totalItems: response.totalItems,
+                    totalPages: response.totalPages
+
+                });
+            });
     }
 
     render() {
 		return (
-			<div id="video-list">
-                <header>
-                    <h3>Your videos</h3>
-                </header>
-                <ul id="your-videos">
-                    {this.state.videos.map((video) =>
-                        <li key={video.id}>
-                            <Link to={{pathname: "/watch/" + video.id}}>{video.name}</Link>
-                        </li>
-                    )}
-                </ul>
+			<div className="row">
+                {this.state.videos.map((video) =>
+                    <Link  to={{pathname: "/watch/" + video.id}}>
+                        <VideoCard key={video.id} video={video}/>
+                    </Link>
+                )}
             </div>
 		);
 	}
