@@ -5,12 +5,16 @@ import com.example.quickstream.services.VideoService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -18,6 +22,23 @@ import java.util.List;
 @AllArgsConstructor
 public class VideoController {
     private VideoService videoService;
+
+    @GetMapping()
+    public ResponseEntity<Map<String, Object>> getAllVideos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int limit
+    ){
+        Pageable paging = PageRequest.of(page, limit);
+        Page<Video> pageVideos = videoService.getVideos(paging);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("videos", pageVideos.getContent());
+        response.put("currentPage", pageVideos.getNumber());
+        response.put("totalItems", pageVideos.getTotalElements());
+        response.put("totalPages", pageVideos.getTotalPages());
+
+        return ResponseEntity.ok(response);
+    }
 
     // Each parameter annotated with @RequestParam corresponds to a form field where the String argument is the name of the field
     @PostMapping()
@@ -31,11 +52,5 @@ public class VideoController {
     public ResponseEntity<Resource> getVideoContentById(@PathVariable("id") Long id) throws IOException {
         return ResponseEntity
                 .ok(new ByteArrayResource(videoService.getVideoContent(id)));
-    }
-
-    @GetMapping("all")
-    public ResponseEntity<List<Video>> getAllVideos(){
-        return ResponseEntity
-                .ok(videoService.getAllVideos());
     }
 }
