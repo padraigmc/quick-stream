@@ -33,7 +33,7 @@ public class VideoController {
     @GetMapping()
     public ResponseEntity<PagedModel<VideoModel>> getAllVideos(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int limit
+            @RequestParam(defaultValue = "5") int size
     ){
         Page<Video> videoPage = videoService.getVideos(page, size);
 

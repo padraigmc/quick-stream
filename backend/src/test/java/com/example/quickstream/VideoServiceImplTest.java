@@ -53,7 +53,7 @@ public class VideoServiceImplTest {
         when(repo.findAll()).thenReturn(expected);
 
         // query service for video names
-        List<Video> actual = service.getVideos(PageRequest.of(0, 1)).getContent();
+        List<Video> actual = service.getVideos(0, 1).getContent();
 
         // assert expected == actual
         assertEquals(expected, actual);

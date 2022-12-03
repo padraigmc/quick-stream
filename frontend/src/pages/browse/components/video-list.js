@@ -1,47 +1,52 @@
-import React from 'react';
-import { Link, useSearchParams  } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import VideoCard from "./video-card"
 
-class VideoList extends React.Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            videos: [],
-            currentPage: 0,
-            totalItems: 0,
-            totalPages: 0
-        }
+function VideoList() {
+    let [searchParams, setSearchParams] = useSearchParams({page: 0, size: 5});
+    const [state, setState] = useState({
+        videos: [],
+        currentPage: 0,
+        totalElements: 0,
+        totalPages: 0,
+        links: {}
+    });
 
-        //const [searchParams] = useSearchParams();
-        //console.log(searchParams)
-    }
+    useEffect(() => {
+        var url = "http://localhost:8080/video?" + searchParams;
 
-    componentDidMount() {
-        fetch("http://localhost:8080/video/?limit=10")
+        console.log(url)
+        fetch(url)
             .then(response => response.json())
             .then(response => {
-                this.setState({
-                    videos: response.videos,
-                    currentPage: response.currentPage,
-                    totalItems: response.totalItems,
-                    totalPages: response.totalPages
-
+                setState({
+                    videos: response._embedded.videoModels,
+                    currentPage: response.page.number,
+                    totalElements: response.page.totalElements,
+                    totalPages: response.page.totalPages,
+                    links: response._links
                 });
             });
-    }
+    }, [searchParams]);
 
-    render() {
-		return (
-			<div className="row">
-                {this.state.videos.map((video) =>
-                    <Link  to={{pathname: "/watch/" + video.id}}>
-                        <VideoCard key={video.id} video={video}/>
+    return (
+        <div className="videoList">
+            <div className="row">
+                {state.videos.map((video) =>
+                    <Link to={{pathname: "/watch/" + video.id}} key={video.id}>
+                        <VideoCard video={video}/>
                     </Link>
                 )}
             </div>
-		);
-	}
+            <div className="row">
+                <button className="" disabled={!("prev" in state.links)} onClick={() => setSearchParams(new URL(state.links.prev.href).searchParams.toString())}
+                >Previous</button>
+
+                <button disabled={!("next" in state.links)} onClick={() => setSearchParams(new URL(state.links.next.href).searchParams.toString())}
+                >Next</button>
+            </div>
+        </div>
+    );
 
 }
 

@@ -7,6 +7,7 @@ import com.example.quickstream.repo.VideoRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +35,8 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Page<Video> getVideos(Pageable paging) {
+    public Page<Video> getVideos(int page, int limit) {
+        Pageable paging = PageRequest.of(page, limit);
         return repo.findAll(paging);
     }
 

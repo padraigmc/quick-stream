@@ -13,5 +13,5 @@ public interface VideoService {
 
     void saveVideo(MultipartFile file, String name) throws IOException;
 
-    Page<Video> getVideos(Pageable pageing);
+    Page<Video> getVideos(int page, int limit);
 }

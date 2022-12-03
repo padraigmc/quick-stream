@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 function VideoCard(props) {
     const [backgroundColor, setBackgroundColor] = useState("");
 
     if ('video' in props) {
         return (
-            <div className="col md-5 lg-2"
+            <div className="col md-5 lg-3"
                 onMouseEnter={() => setBackgroundColor("lightgrey")}
                 onMouseLeave={() => setBackgroundColor("")}
                 style={{ backgroundColor: backgroundColor }} 
