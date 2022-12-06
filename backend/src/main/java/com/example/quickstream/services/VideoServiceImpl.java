@@ -6,9 +6,12 @@ import com.example.quickstream.exceptions.VideoNotFoundException;
 import com.example.quickstream.repo.VideoRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -32,8 +35,9 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public List<Video> getAllVideos() {
-        return repo.findAll();
+    public Page<Video> getVideos(int page, int limit) {
+        Pageable paging = PageRequest.of(page, limit);
+        return repo.findAll(paging);
     }
 
     @Override

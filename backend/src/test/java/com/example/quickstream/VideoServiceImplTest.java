@@ -6,11 +6,9 @@ import com.example.quickstream.repo.VideoRepo;
 import com.example.quickstream.services.VideoService;
 import com.example.quickstream.services.VideoServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
-/*
-    Import all the static methods in the Mockito class, so we can use them as though they are methods in this class.
-    These include methods such as mock, when, etc. Same with the JUnit assertions.
- */
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +45,7 @@ public class VideoServiceImplTest {
     }
 
     @Test
-    void getAllVideos() {
+    void getVideos() {
         // list of expected video names
         List<Video> expected = List.of(new Video("myVid"), new Video("otherVid"));
 
@@ -55,7 +53,7 @@ public class VideoServiceImplTest {
         when(repo.findAll()).thenReturn(expected);
 
         // query service for video names
-        List<Video> actual = service.getAllVideos();
+        List<Video> actual = service.getVideos(0, 1).getContent();
 
         // assert expected == actual
         assertEquals(expected, actual);

@@ -22,17 +22,17 @@ services:
       - VIDEOS_PATH=/app/data/videos/
     volumes:
       - ./backend:/app
+      - ./backend/data/videos:/app/data/videos/
     networks:
       - ui-api
       - api-db
   frontend:
-    build: frontend
+    build: ./frontend
     environment:
-      WATCHPACK_POLLING: true
+      WDS_SOCKET_PORT: 80
     ports:
       - 80:3000
     volumes:
-      - /app/node_modules
       - ./frontend:/app
     networks:
       - ui-api

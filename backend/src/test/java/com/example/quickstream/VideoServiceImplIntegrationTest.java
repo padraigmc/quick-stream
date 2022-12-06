@@ -7,6 +7,7 @@ import com.example.quickstream.services.VideoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class VideoServiceImplIntegrationTest {
         repo.save(new Video(testName));
 
         // query service for video names
-        List<Video> actual = service.getAllVideos();
+        List<Video> actual = service.getVideos(0, 5).getContent();
 
         // Check the service returns a list of the same contents as the expected list of videos
         assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
