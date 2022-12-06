@@ -12,8 +12,8 @@ function VideoCard(props) {
             >
                 <img className="img-fluid" src="/play_button.png" alt=""></img>
                 <div className="video-card-info">
-                    <p>{props.video.name}</p>
-                    <p className="txt-gray">{props.video.contentLength}</p>
+                    <h2>{props.video.name}</h2>
+                    <p>{props.video.contentLength}</p>
                 </div>
             </div>
         );

@@ -11,12 +11,14 @@ import Watch from './pages/watch/watch';
 const App = () => (
   <div className="app">
     <NavBar />
-    <Routes>
-      <Route exact path='/' element={<Home />}></Route>
-      <Route exact path='/browse' element={<Browse />}></Route>
-      <Route exact path='/upload' element={<Upload />}></Route>
-      <Route exact path='/watch/:id' element={<Watch />}></Route>
-    </Routes>
+    <div className='content'>
+      <Routes>
+        <Route exact path='/' element={<Home />}></Route>
+        <Route exact path='/browse' element={<Browse />}></Route>
+        <Route exact path='/upload' element={<Upload />}></Route>
+        <Route exact path='/watch/:id' element={<Watch />}></Route>
+      </Routes>
+    </div>
   </div>
 );
 
